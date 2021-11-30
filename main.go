@@ -5,10 +5,26 @@ import (
 	"exam/datafile"
 	"exam/magazine"
 	"fmt"
+	"io/ioutil"
 	"log"
 )
 
 func main() {
+	files, err := ioutil.ReadDir("my_directory")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	for _, file := range files {
+		if file.IsDir() {
+			fmt.Println("Dir : ", file.Name())
+		} else {
+			fmt.Println("File : ", file.Name())
+		}
+	}
+}
+
+func calender() {
 	date := calendar.Date{}
 	err := date.SetYear(2021)
 	if err != nil {
@@ -32,10 +48,10 @@ func address() {
 	employee.Name = "조일현"
 	employee.Salary = 60000
 	employee.Address = magazine.Address{
-		Street: "신곡동",
-		State: "경기도",
+		Street:     "신곡동",
+		State:      "경기도",
 		PostalCode: "01235",
-		City: "의정부",
+		City:       "의정부",
 	}
 	fmt.Println(employee)
 
