@@ -2,26 +2,34 @@ package main
 
 import (
 	"exam/calendar"
+	"exam/crawler"
 	"exam/datafile"
 	"exam/magazine"
+	"exam/prose"
 	"fmt"
-	"io/ioutil"
 	"log"
 )
 
 func main() {
-	files, err := ioutil.ReadDir("my_directory")
-	if err != nil {
-		log.Fatal(err)
-	}
+	result := prose.JoinWithCommas([]string{"가", "나", "다", "라", "마"})
 
-	for _, file := range files {
-		if file.IsDir() {
-			fmt.Println("Dir : ", file.Name())
-		} else {
-			fmt.Println("File : ", file.Name())
-		}
-	}
+	fmt.Println(result)
+}
+
+func goRoutine() {
+	channel := make(chan crawler.Page)
+	go crawler.GetContentLength("https://firstmall.kr", channel)
+	go crawler.GetContentLength("https://google.com", channel)
+	go crawler.GetContentLength("https://naver.com", channel)
+	go crawler.GetContentLength("https://notion.so", channel)
+	go crawler.GetContentLength("https://github.com", channel)
+
+	fmt.Println(1, <-channel)
+	fmt.Println(2, <-channel)
+	fmt.Println(3, <-channel)
+	fmt.Println(4, <-channel)
+	fmt.Println(5, <-channel)
+	fmt.Println(6, <-channel)
 }
 
 func calender() {
